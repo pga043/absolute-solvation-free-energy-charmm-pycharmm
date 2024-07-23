@@ -1,7 +1,5 @@
 #!/bin/bash
 
-## LigParGen run on one of the PC-lab systems
-## pga043@129.177.190.61 
 ## conda activate boss
 
 export BOSSdir=/export/softwares/BOSS/boss/
