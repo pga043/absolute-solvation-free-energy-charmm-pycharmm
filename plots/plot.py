@@ -6,7 +6,7 @@ import scipy.stats
 mol_list = np.genfromtxt('mol_list.txt', dtype=str)
 msld =  np.genfromtxt('Result.txt', dtype=str)
 cc =  np.genfromtxt('book-ending/8mbar/cc.dat', dtype=str)
-expt = []
+expt = [] # list of experimental data
 
 # compounds and expt. deltaG
 compounds = {}
