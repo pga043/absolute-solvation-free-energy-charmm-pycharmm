@@ -1,1 +1,17 @@
+#!/bin/bash
+
+while read i
+do
+
+cp ../ligands_prep/"$i".mol2 .
+obabel -imol2 "$i".mol2 -osdf > "$i".sdf
+
+echo "Now processing mol" $i
+
+python ligand2charmm.py -Lname "$i" -nc 0 -index 1
+
+done < <(cat mol_list.txt)
+
+
+##antechamber -rn mol51 -s 2 -nc 0 -i mol51.sdf -fi sdf -o mol51.ac -fo ac -c bcc -pf n -at gaff2 -ek "ndiis_attempts=1000, scfconv=1.d-15"
 
