@@ -1,9 +1,0 @@
-#https://pubs.acs.org/doi/full/10.1021/acs.jcim.4c00126
-
-dG_hydr = dG(1->0)_vacuum - dG(1->0)_solution + long_range_correction
-
-lambda 1->0: annihilation 
-
-
-
-
