@@ -1,0 +1,108 @@
+* CHARMM input file for analyzing fixed lambda-dynamics
+* Written by Parveen Gartan 4 Oct 2022
+*
+
+set lig = lig7
+set resn = MOL
+set builddir = prep
+set box = 20
+set temp = 298.15
+set myrep = 0
+set xtnd = 1
+set nwins = 8
+
+! perturbation variables
+set nsites = 1 
+set nsubs1 = 2 
+set nblocks = 2 
+
+stream "variables.inp"
+
+!! Read in toppar stream file
+stream @builddir/toppar.str
+
+read psf card name minimized.psf
+read coor card name minimized.crd
+
+!---------------------------------------------------------------------------
+! Analyze fixed l-dynamics trajectory
+!---------------------------------------------------------------------------
+set j 1
+label loop_lambda
+
+stream ../lambdas/lam@j.inp
+
+!! BLOCK SETUP
+define solu select resname @resn end
+block
+   clear
+end
+
+block 1
+   call 1 select resname @resn end
+end
+block
+   coef 1 1 1.0 elec @ele vdw @vdw
+end
+
+stream ../nbond.str
+
+open unit 44 read file name "dcd/@{SYSNAME}_flat.dcd_@MYREP"
+traj query unit 44
+set nstep1 = ?nstep
+
+!check if the second dcd file exists or not becasue for the new intermediate windows
+!10 ns is stored in only one dcd
+bomlev -1
+open unit 45 read file name "dcd/@{SYSNAME}_flat.dcd_@XTND"
+if ?IOSTAT .eq. 1 then
+  set nunit = 2
+  traj query unit 45
+  set  nstep2 = ?nstep
+  calc nstep = @nstep1 + @nstep2
+else
+  set nunit = 1
+  calc nstep = @nstep1
+bomlev 0
+endif 
+
+set skip = 10000
+
+calc stop = @nstep / @skip 
+
+traj firstu 44 nunit @nunit skip @skip ! nocheck ! use whole trajectory, saving freq = 1000 so, skipping frames here
+
+open write unit 21 form name @analysis/win@j.dat
+write title unit 21
+* time U
+*
+
+!stream ../noe.inp
+
+set f 1 ! loop over ?nstep with skipping @steps in between
+label loop_frame
+! get next coordinate set according to specifications above
+traj read
+
+!! soft-core is only implemented with blade or domdec
+shake fast bonh param
+scalar fbeta set 10.0 sele all end   !! 10 for domdec, 0.1 for blade
+!blade on
+energy
+set e1 ?ener
+
+write title unit 21
+* @f @e1 
+
+incr f by 1 ! skip in traj reading is skipping steps
+if f le @stop goto loop_frame
+
+block 
+clear 
+end
+incr j by 1
+if j le @nwins goto loop_lambda
+
+
+stop
+

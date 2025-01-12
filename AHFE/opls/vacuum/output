@@ -1,0 +1,5 @@
+ Parameter: IFLAT <- "12"
+ Parameter: ESTEPS <- "500000"
+ Parameter: NSTEPS <- "2500000"
+ Parameter: SEED <- "32433"
+ Parameter: LAM <- "12"
