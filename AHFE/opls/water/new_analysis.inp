@@ -1,0 +1,134 @@
+* CHARMM input file for analyzing fixed lambda-dynamics
+* Written by Parveen Gartan 4 Oct 2022
+*
+
+set lig = lig7
+set resn = MOL
+set builddir = prep
+set box = 26.5925696
+set temp = 298.15
+set myrep = 0
+set xtnd = 1
+set nwins = 15
+
+! perturbation variables
+set nsites = 1 
+set nsubs1 = 2 
+set nblocks = 2 
+
+stream "variables.inp"
+
+!! Read in toppar stream file
+stream @builddir/toppar.str
+
+read psf card name minimized.psf
+read coor card name minimized.crd
+
+crystal define cubic @box @box @box 90. 90. 90.
+crystal build cutoff 14 nope 0
+image byres xcen 0 ycen 0 zcen 0 sele resn tip3 .or. resn pot .or. resn cla .or. segid HETA  end
+image byseg xcen 0 ycen 0 zcen 0 sele .not. ( resn tip3 .or. resn pot .or. resn cla ) end
+
+!---------------------------------------------------------------------------
+! Analyze fixed l-dynamics trajectory
+!---------------------------------------------------------------------------
+set j 1
+label loop_lambda
+
+stream ../lambdas/lam@j.inp
+
+define solu select resname @resn end
+define env select resname tip3 end
+
+calc blockplusone = @nblocks + 1
+
+!! BLOCK setup
+BLOCK @blockplusone
+   clear
+END
+BLOCK @blockplusone !RX! NREP @nreps
+   Call 1 sele env end
+   Call 2 sele solu show end
+   Call 3 sele segid dum show end
+
+   qldm theta
+   lang temp @temp
+   !RX! phmd ph 7
+   soft on   ! this turns on soft-cores
+   pmel ex   ! this turns on PME
+
+   ldin 1 1.0   0.0  5.0  0.0 5.0
+   ldin 2 @lam1 0.0  5.0  0.0 5.0 !RX! NONE      !! lams1s1 = 0.0 => no biasing potential or reference free energy
+   ldin 3 @lam2 0.0  5.0  0.0 5.0 !RX! UNEG 7.0  !! lams1s2 = 0.0 => no biasing potential or reference free energy
+
+   set excl1 = 2 3
+   excl @excl1
+
+   rmla bond thet dihe impr
+   msld 0  1  1 ffix !fnex @fnex
+   msma
+
+END
+
+stream ../nbond.str
+
+open unit 44 read file name "dcd/@{SYSNAME}_flat.dcd_@MYREP"
+traj query unit 44
+set nstep1 = ?nstep
+
+!check if the second dcd file exists or not becasue for the new intermediate windows
+!10 ns is stored in only one dcd
+bomlev -1
+open unit 45 read file name "dcd/@{SYSNAME}_flat.dcd_@XTND"
+if ?IOSTAT .eq. 1 then
+  set nunit = 2
+  traj query unit 45
+  set  nstep2 = ?nstep
+  calc nstep = @nstep1 + @nstep2
+else
+  set nunit = 1
+  calc nstep = @nstep1
+bomlev 0
+endif 
+
+set skip = 10000
+
+calc stop = @nstep / @skip 
+
+traj firstu 44 nunit @nunit skip @skip ! nocheck ! use whole trajectory, saving freq = 1000 so, skipping frames here
+
+open write unit 21 form name @analysis/win@j.dat
+write title unit 21
+* time U
+*
+
+!stream ../noe.inp
+
+set f 1 ! loop over ?nstep with skipping @steps in between
+label loop_frame
+! get next coordinate set according to specifications above
+traj read
+
+!! soft-core is only implemented with blade or domdec
+shake fast bonh param
+scalar fbeta set 10.0 sele all end   !! 10 for domdec, 0.1 for blade
+domdec gpu only dlb off ndir 1 1 1
+!blade on
+energy
+set e1 ?ener
+
+write title unit 21
+* @f @e1 
+
+incr f by 1 ! skip in traj reading is skipping steps
+if f le @stop goto loop_frame
+
+block 
+clear 
+end
+incr j by 1
+if j le @nwins goto loop_lambda
+
+
+stop
+
