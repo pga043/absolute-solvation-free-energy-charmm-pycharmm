@@ -1,0 +1,9 @@
+## vswitch and lrc_ms
+FastMBAR free energy difference is -1.843 +- 0.175 kcal/mol 
+MBAR free energy difference is -1.829 +- 0.192 kcal/mol 
+## vswitch only
+FastMBAR free energy difference is -1.830 +- 0.191 kcal/mol 
+MBAR free energy difference is -1.829 +- 0.192 kcal/mol 
+## vfswitch
+FastMBAR free energy difference is -2.603 +- 0.231 kcal/mol 
+MBAR free energy difference is -2.542 +- 0.192 kcal/mol 

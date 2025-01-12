@@ -1,0 +1,31 @@
+read rtf card append
+* rtf for dummy atom
+*
+36  1
+
+mass -1 d 1.0
+
+resi dum 0.0
+atom d d 0.0
+
+end
+
+read param card append flex
+* param file for dummy atom
+*
+
+atoms
+mass -1 d 1.0
+
+nonbonded
+
+d 0.0 -0.0 0.0
+
+end
+
+read sequ dum 1
+generate dum
+
+scalar x set ?XAVE select segid dum end
+scalar y set ?YAVE select segid dum end
+scalar z set ?ZAVE select segid dum end

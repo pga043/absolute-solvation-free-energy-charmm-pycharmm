@@ -1,0 +1,33 @@
+* generate a dummy atom
+*
+
+set dummy = 1
+!
+! Add a dummy atom if asked 
+set dummylabel
+
+if @dummy .gt. 0 then 
+	wrnlev 4
+	
+	READ SEQU DUM 1
+	GENERate DUM setup 
+
+	! 
+	! Get the COM of the solute
+	! to place the dummy atom initially
+	coor stat sele ( .not. segid DUM )  end
+	calc xdum = ?XAVE + 5
+	calc ydum = ?YAVE + 5
+	calc zdum = ?ZAVE + 5
+
+	! 
+	! Position anchor dummy at (xdum, ydum, zdum)
+	scalar X set @xdum sele type DUM end
+	scalar Y set @ydum sele type DUM end
+	scalar Z set @zdum sele type DUM end
+
+	scalar MASS set 12 sele type DUM end
+	
+endif
+!defi SOLU sele ( segid PROT .or. segid LIG .or. segid SDUM ) end
+
