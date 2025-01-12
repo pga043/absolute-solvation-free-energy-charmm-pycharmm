@@ -1,0 +1,92 @@
+* Perturbation calculation with WHAM post-processing
+*
+
+stream "variables.inp"
+
+bomblev -1
+
+stream "prep/@{SYSNAME}.inp"
+
+! Set nonbonded options
+nbonds atom -
+ - ! fswitch -                !! Use force switch for elec-nb interactions
+
+faster on
+energy
+
+cons harm abso force 10.0 mass select (segid MOL .or. segid LIG) show end comp
+mini sd nstep 200 nprint 10 step 0.005
+cons harm clear
+
+! release restraints and minimize everything
+mini sd nstep 250 nprint 10 step 0.005                  !! Do min, Steepest-Decent
+
+write psf card name minimized.psf
+* after minimization psf
+*
+write coor card name minimized.crd
+* after minimization crd
+*
+write coor pdb form name minimized.pdb
+* after minimization pdb
+*
+bomblev 0
+
+!----------------------------------
+set myrep = 0
+
+open write form unit 28 name output_@myrep
+outu 28
+
+shake fast bonh param
+scalar fbeta set 10.0 sele all end
+
+!=============================================
+PERT sele resname LIG* .or. resname MOL show end
+
+! This is the mutation -- 'delete' ligand
+scalar char set 0. sele resname LIG* .or. resname MOL end
+scalar rsca set 0. sele resname LIG* .or. resname MOL end
+
+open write card unit 54 name wham.dat
+write title unit 54
+** This is a file for WHAM post-processing
+**     Lambda   (E_1-E_0) 
+**
+*
+
+
+!==============================
+!(2) PERT CPT simulation
+
+set equil = 50000 ! from each window discard this data
+set dl    = 0.1
+set incr  = 500000
+calc nwins = abs(1/@dl)
+calc nsteps = (@nwins +1) * @incr
+set temp = 298.15
+
+calc seed = @seed
+calc pmass = ?natom * 0.12
+DYNA leap lang STRT  NSTEP @nsteps TIMESTEP 0.002 -
+    IPRFRQ 1000 IHTFRQ 0 IEQFRQ 1000 NTRFRQ 500  -
+    IUNCRD 50  ISEED @seed @seed @seed @seed  -
+    NPRINT 1000 NSAVC 0 NSAVV 0 INBFRQ -1 IHBFRQ 0 -
+    IASORS 0 IASVEL 1 ISCVEL 0 ICHECW 1 TWINDH 20.0 TWINDL -20.0 -
+    imgfrq 0 echeck -1 -
+    hoover reft @temp tmass 1000 firstt @temp finalt @temp tstruc @temp tbath @temp -
+    PEQUIL @equil PINCR @incr -
+    LSTA 0 LSTOP 1  LINCR @dl LEXP 3 pwind -
+    wham 54
+
+!    PSSP
+!    EIPS VIPS PXYZ DBEXP -
+!    wham 54 !PUNIT 53 wham 54 -
+
+
+close unit 54
+
+!=============================
+
+stop
+

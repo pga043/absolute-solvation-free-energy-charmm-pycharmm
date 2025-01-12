@@ -1,0 +1,17 @@
+* postprocessing with wham
+*
+
+set nwins = 100
+!set time = 450000
+set time = 45000 
+open read card unit 54 name wham.dat
+WHAM MAXWindow @nwins MAXTime @time unit 54 tol 0.001  nstep 1000
+close unit 54
+
+
+!!Illustrate that the results converges rapidly even for short simulations
+open read card unit 54 name wham.dat
+WHAM MAXWindow @nwins  MAXTime @time unit 54 tol 0.001  nstep 1000
+close unit 54
+
+stop

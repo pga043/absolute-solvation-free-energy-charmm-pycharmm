@@ -1,0 +1,12 @@
+#!/bin/bash
+
+## energy check =>
+# grep 'DYNA>' output_1 | awk 'NR > 27 { print }' > tmp_1
+# vimdiff tmp_1 win1/post/win1.dat
+
+## energy matches for both blade and domdec postprocessing:
+## if lrc_ms = False, because during dynamics the LRC is printed separately from 
+## the total potential energy of the system.
+
+## LRC = long range correction
+## lrc_ms in nonbonds require vswitch
