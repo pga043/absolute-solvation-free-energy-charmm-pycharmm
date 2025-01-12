@@ -1,0 +1,2 @@
+FastMBAR free energy difference is -2.780 +- 0.272 kcal/mol 
+MBAR free energy difference is -2.694 +- 0.496 kcal/mol 

@@ -1,0 +1,74 @@
+* Topology File.
+* 
+   99   1
+MASS    -1 _CAXB  12.010000
+MASS    -1 _CPXB  12.010000
+MASS    -1 _CLXB  35.450000
+MASS    -1 _HAXB   1.008000
+
+RESI lig1  0.000000
+GROUP
+ATOM C1    _CAXB   0.249500
+ATOM C2    _CAXB  -0.140500
+ATOM C3    _CAXB   0.004900
+ATOM C4    _CAXB  -0.005100
+ATOM C5    _CAXB  -0.112500
+ATOM C6    _CPXB  -0.064500
+ATOM C7    _CPXB  -0.039500
+ATOM C8    _CAXB  -0.122500
+ATOM C9    _CAXB  -0.000100
+ATOM C10   _CAXB   0.003900
+ATOM C11   _CAXB  -0.000100
+ATOM C12   _CAXB   0.011900
+ATOM Cl1   _CLXB  -0.064900
+ATOM Cl2   _CLXB  -0.055900
+ATOM Cl3   _CLXB  -0.053900
+ATOM Cl4   _CLXB  -0.071900
+ATOM Cl5   _CLXB  -0.082900
+ATOM Cl6   _CLXB  -0.082900
+ATOM H1    _HAXB   0.147000
+ATOM H2    _HAXB   0.155000
+ATOM H3    _HAXB   0.161000
+ATOM H4    _HAXB   0.164000
+
+BOND C1    C2           	! dist	    1.3970
+BOND C1    C6           	! dist	    1.4030
+BOND C1    H1           	! dist	    1.0831
+BOND C2    C3           	! dist	    1.3987
+BOND C2    H2           	! dist	    1.0828
+BOND C3    C4           	! dist	    1.4053
+BOND C3    Cl6          	! dist	    1.7584
+BOND C4    C5           	! dist	    1.3992
+BOND C4    Cl5          	! dist	    1.7591
+BOND C5    C6           	! dist	    1.4051
+BOND C5    H3           	! dist	    1.0832
+BOND C6    C7           	! dist	    1.4807
+BOND C7    C8           	! dist	    1.4012
+BOND C7    C12          	! dist	    1.4118
+BOND C8    C9           	! dist	    1.3967
+BOND C8    H4           	! dist	    1.0842
+BOND C9    C10          	! dist	    1.4040
+BOND C9    Cl4          	! dist	    1.7585
+BOND C10   C11          	! dist	    1.4075
+BOND C10   Cl3          	! dist	    1.7638
+BOND C11   C12          	! dist	    1.4094
+BOND C11   Cl2          	! dist	    1.7656
+BOND C12   Cl1          	! dist	    1.7683
+
+
+
+IMPH C2    C6    C1    H1   
+IMPH C1    C3    C2    H2   
+IMPH C2    C4    C3    Cl6  
+IMPH C3    C5    C4    Cl5  
+IMPH C4    C6    C5    H3   
+IMPH C5    C1    C6    C7   
+IMPH C8    C12   C7    C6   
+IMPH C9    C7    C8    H4   
+IMPH C8    C10   C9    Cl4  
+IMPH C9    C11   C10   Cl3  
+IMPH C10   C12   C11   Cl2  
+IMPH C11   Cl1   C12   C7   
+
+
+

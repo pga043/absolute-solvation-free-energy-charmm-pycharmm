@@ -1,0 +1,310 @@
+ Parameter: DIR <- "."
+ Parameter: LIG <- "LIG1"
+ Parameter: SEG <- "MOL"
+1
+                 Chemistry at HARvard Macromolecular Mechanics
+           (CHARMM) - Developmental Version 49a1     August 15, 2023            
+                            Git commit ID 78efbde3b                             
+       Copyright(c) 1984-2023  President and Fellows of Harvard College
+                              All Rights Reserved
+  Current operating system: Linux-4.18.0-348.2.1.el8_5.x86_64(x86_64)@taunus.   
+                 Created on 12/26/24 at 18:09:42 by user: parveeng    
+
+            Maximum number of ATOMS:    360720, and RESidues:      120240
+ RDTITL> * RUN SEGMENT THROUGH CHARMM
+ RDTITL> * CGENFF PARAMETERS FOR LIGAND
+ RDTITL> *
+  
+ CHARMM>     
+  
+ CHARMM>    prnlev 5
+  
+ CHARMM>    ! read topology and parameter files
+ CHARMM>    stream toppar.str
+ VOPEN> Attempting to open::toppar.str::
+ OPNLGU> Unit 99 opened for READONLY access to toppar.str
+
+                    INPUT STREAM SWITCHING TO UNIT    99
+ RDTITL> * AMBER PROTEIN AND WATER TOPOLOGY AND PARAMETERS
+ RDTITL> *
+ Parameter: IN1 <- "" <empty>
+  
+ CHARMM>     
+  
+ CHARMM>    read rtf card name toppar/parm14sb_all.rtf
+ VOPEN> Attempting to open::toppar/parm14sb_all.rtf::
+ MAINIO> Residue topology file being read from unit  90.
+ TITLE> *  AMBER 2014SB FORCE-FIELD CONVERSION
+ TITLE> *  SEE: HTTP://PUBS.ACS.ORG/DOI/ABS/10.1021/ACS.JCTC.5B00255
+ TITLE> *  J. CHEM. THEORY COMPUT., DOI: 10.1021/ACS.JCTC.5B00255
+ TITLE> *
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>    read param card flex name toppar/parm14sb_all.prm
+ VOPEN> Attempting to open::toppar/parm14sb_all.prm::
+
+          PARAMETER FILE BEING READ FROM UNIT 90
+ TITLE> *  AMBER FF14SB FORCE FIELD CONVERSION
+ TITLE> *  SEE: HTTP://PUBS.ACS.ORG/DOI/ABS/10.1021/ACS.JCTC.5B00255
+ TITLE> *  J. CHEM. THEORY COMPUT., DOI: 10.1021/ACS.JCTC.5B00255
+ TITLE> *
+ PARMIO> NONBOND, HBOND lists and IMAGE atoms cleared.
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>     
+  
+ CHARMM>    ! Custom topology and parameter files for LIG
+ CHARMM>    read rtf card name @lig_charmm.rtf append
+ Parameter: LIG -> "LIG1"
+ VOPEN> Attempting to open::lig1_charmm.rtf::
+ MAINIO> Residue topology file being read from unit  90.
+ TITLE> *
+ RDTITL> No title read.
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>    read param flex card name @lig_charmm.prm append
+ Parameter: LIG -> "LIG1"
+ VOPEN> Attempting to open::lig1_charmm.prm::
+
+          PARAMETER FILE BEING READ FROM UNIT 90
+ TITLE> ATOM
+ RDTITL> No title read.
+ PARMIO> NONBOND, HBOND lists and IMAGE atoms cleared.
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ VCLOSE: Closing unit   99 with status "KEEP"
+
+                    RETURNING TO INPUT STREAM     5
+  
+ CHARMM>     
+  
+ CHARMM>    ! Read sequence from the PDB coordinate file
+ CHARMM>    read sequ pdb resi name @dir/@lig.pdb
+ Parameter: DIR -> "."
+ Parameter: LIG -> "LIG1"
+ VOPEN> Attempting to open::./lig1.pdb::
+ **** Warning ****  The following extraneous characters
+ were found while command processing in CHARMM
+ RESI
+ MAINIO> Sequence information being read from unit  90.
+ TITLE>  *
+
+          RESIDUE SEQUENCE --     1 RESIDUES
+          MOL 
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>     
+  
+ CHARMM>    bomlev -1
+  
+ CHARMM>    generate @seg setu
+ Parameter: SEG -> "MOL"
+ NO PATCHING WILL BE DONE ON THE FIRST RESIDUE
+ NO PATCHING WILL BE DONE ON THE LAST  RESIDUE
+ AUTGEN: Autogenerating specified angles and dihedrals.
+ GENPSF> Segment   1 has been generated. Its identifier is MOL.
+ PSFSUM> PSF modified: NONBOND lists and IMAGE atoms cleared.
+ PSFSUM> Summary of the structure file counters :
+         Number of segments      =        1   Number of residues   =        1
+         Number of atoms         =       22   Number of groups     =       10
+         Number of bonds         =       23   Number of angles     =       36
+         Number of dihedrals     =       52   Number of impropers  =       12
+         Number of cross-terms   =        0   Number of autogens   =        0
+         Number of HB acceptors  =        0   Number of HB donors  =        0
+         Number of NB exclusions =        0   Total charge =   -0.00000
+ QXFORM> Expanded format used.
+         More than 4 character atom type used.
+  
+ CHARMM>     
+  
+ CHARMM>    ! fix the non-integer charge problem
+ CHARMM>    ! `Charlie's oNE-LINE solution`
+ CHARMM>    SCALar CHARGE stat
+ Statistics for   22 selected atoms:
+       minimum =  -0.140500      maximum =   0.249500     weight =    22.0000    
+       average =  -1.892426E-18  variance=   0.105138     total  =  -4.163336E-17
+  
+ CHARMM>    set qavg = ?SAVE
+ RDCMND substituted energy or value "?SAVE" to "-1.89242561E-18"
+ Parameter: QAVG <- "-1.89242561E-18"
+  
+ CHARMM>    SCALar CHARGE add -@qavg
+ Parameter: QAVG -> "-1.89242561E-18"
+  
+ CHARMM>    SCALar CHARGE stat
+ Statistics for   22 selected atoms:
+       minimum =  -0.140500      maximum =   0.249500     weight =    22.0000    
+       average =  -6.308085E-19  variance=   0.105138     total  =  -1.387779E-17
+  
+ CHARMM>     
+  
+ CHARMM>    bomlev -1
+  
+ CHARMM>    read coor pdb name @dir/@lig.pdb
+ Parameter: DIR -> "."
+ Parameter: LIG -> "LIG1"
+ VOPEN> Attempting to open::./lig1.pdb::
+  read CHARMM-pdb format
+          SPATIAL COORDINATES BEING READ FROM UNIT 90
+ TITLE>  *
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>    bomlev 0
+  
+ CHARMM>     
+  
+ CHARMM>    define fixed sele (.not. INIT) .and. (.not. hydrogen) end
+ SELRPN>      0 atoms have been selected out of     22
+  
+ CHARMM>     
+  
+ CHARMM>    !Print heavy atoms with unknown coordinates
+ CHARMM>    coor print sele (.not. INIT) .and. (.not. hydrogen) end
+ SELRPN>      0 atoms have been selected out of     22
+
+      ***** LEVEL  2 WARNING FROM <COORIO> *****
+      ***** ZERO ATOMS SPECIFIED TO WRITE. NO FILE CREATED
+      ******************************************
+      BOMLEV (  0) IS NOT REACHED. WRNLEV IS  5
+
+  
+ CHARMM>     
+  
+ CHARMM>    ic generate
+
+               Generation complete. New IC table entries:
+
+        N      I             J             K             L        R(I(J/K)) T(I(JK/KJ)) PHI   T(JKL)   R(KL)
+
+        1     1 C2          1 C6          1 *C1         1 H1         0.0000    0.00  180.00    0.00   0.0000
+        2     1 C6          1 C1          1 C2          1 C3         0.0000    0.00  180.00    0.00   0.0000
+        3     1 C3          1 C1          1 *C2         1 H2         0.0000    0.00  180.00    0.00   0.0000
+        4     1 C1          1 C2          1 C3          1 C4         0.0000    0.00  180.00    0.00   0.0000
+        5     1 C4          1 C2          1 *C3         1 CL6        0.0000    0.00  180.00    0.00   0.0000
+        6     1 C2          1 C3          1 C4          1 CL5        0.0000    0.00  180.00    0.00   0.0000
+        7     1 CL5         1 C3          1 *C4         1 C5         0.0000    0.00  180.00    0.00   0.0000
+        8     1 C6          1 C4          1 *C5         1 H3         0.0000    0.00  180.00    0.00   0.0000
+        9     1 C5          1 C1          1 *C6         1 C7         0.0000    0.00  180.00    0.00   0.0000
+       10     1 C1          1 C6          1 C7          1 C12        0.0000    0.00  180.00    0.00   0.0000
+       11     1 C12         1 C6          1 *C7         1 C8         0.0000    0.00  180.00    0.00   0.0000
+       12     1 C6          1 C7          1 C8          1 C9         0.0000    0.00  180.00    0.00   0.0000
+       13     1 C9          1 C7          1 *C8         1 H4         0.0000    0.00  180.00    0.00   0.0000
+       14     1 C7          1 C8          1 C9          1 C10        0.0000    0.00  180.00    0.00   0.0000
+       15     1 C10         1 C8          1 *C9         1 CL4        0.0000    0.00  180.00    0.00   0.0000
+       16     1 C8          1 C9          1 C10         1 C11        0.0000    0.00  180.00    0.00   0.0000
+       17     1 C11         1 C9          1 *C10        1 CL3        0.0000    0.00  180.00    0.00   0.0000
+       18     1 C12         1 C10         1 *C11        1 CL2        0.0000    0.00  180.00    0.00   0.0000
+       19     1 C11         1 C7          1 *C12        1 CL1        0.0000    0.00  180.00    0.00   0.0000
+  
+ CHARMM>    ic param
+  
+ CHARMM>    ic build
+  
+ CHARMM>    define LONEPAIR sele chem LPH end
+ SELRPN>      0 atoms have been selected out of     22
+  
+ CHARMM>    if ?nsel .gt. 0 coor shake sele LONEPAIR end
+ RDCMND substituted energy or value "?NSEL" to "0"
+ Comparing "0" and "0".
+ IF test evaluated as false.  Skipping command
+  
+ CHARMM>    prnlev 0
+  
+ CHARMM>     
+  
+ CHARMM>    ! check if there are unknown coordinate
+ CHARMM>    define XXX sele .not. INIT show end
+ The following atoms are currently set:
+SEGId RESId RESName  .. TYPEs ..
+ SELRPN>      0 atoms have been selected out of     22
+  
+ CHARMM>    if ?nsel .gt. 0 stop ! ABNORMAL TERMINATION: Undefined coordinates
+ RDCMND substituted energy or value "?NSEL" to "0"
+ Comparing "0" and "0".
+ IF test evaluated as false.  Skipping command
+  
+ CHARMM>     
+  
+ CHARMM>    ENERGY
+
+ NONBOND OPTION FLAGS: 
+     ELEC     VDW      ATOMs    CDIElec  SHIFt    VATOm    VSWItch 
+     BYGRoup  NOEXtnd  NOEWald 
+ CUTNB  = 14.000 CTEXNB =999.000 CTONNB = 10.000 CTOFNB = 12.000
+ CGONNB =  0.000 CGOFNB = 10.000
+ WMIN   =  1.500 WRNMXD =  0.500 E14FAC =  0.833 EPS    =  1.000
+ NBXMOD =      5
+ There are        0 atom  pairs and        0 atom  exclusions.
+ There are        0 group pairs and        0 group exclusions.
+ <MAKINB> with mode   5 found     59 exclusions and     46 interactions(1-4)
+ <MAKGRP> found     28 group exclusions.
+ Generating nonbond list with Exclusion mode = 5
+ == PRIMARY == SPACE FOR      221 ATOM PAIRS AND        0 GROUP PAIRS
+
+ General atom nonbond list generation found:
+      172 ATOM PAIRS WERE FOUND FOR ATOM LIST
+        0 GROUP PAIRS REQUIRED ATOM SEARCHES
+
+ENER ENR:  Eval#     ENERgy      Delta-E         GRMS
+ENER INTERN:          BONDs       ANGLes       UREY-b    DIHEdrals    IMPRopers
+ENER EXTERN:        VDWaals         ELEC       HBONds          ASP         USER
+ ----------       ---------    ---------    ---------    ---------    ---------
+ENER>        0      8.97242      0.00000      2.62113
+ENER INTERN>        0.32897      0.50585      0.00000      4.72237      0.00629
+ENER EXTERN>        5.29833     -1.88939      0.00000      0.00000      0.00000
+ ----------       ---------    ---------    ---------    ---------    ---------
+  
+ CHARMM>     
+  
+ CHARMM>    write psf card name @dir/@lig.psf
+ Parameter: DIR -> "."
+ Parameter: LIG -> "LIG1"
+ VOPEN> Attempting to open::./lig1.psf::
+ RDTITL> WRITE COOR CARD NAME ./LIG1.CRD
+ RDTITL> No title read.
+ VCLOSE: Closing unit   90 with status "KEEP"
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>    write coor card name @dir/@lig.crd
+ Parameter: DIR -> "."
+ Parameter: LIG -> "LIG1"
+ VOPEN> Attempting to open::./lig1.crd::
+ RDTITL> STOP
+ RDTITL> No title read.
+ VCLOSE: Closing unit   90 with status "KEEP"
+ VCLOSE: Closing unit   90 with status "KEEP"
+  
+ CHARMM>    stop
+      $$$$$$  New timer profile Local node$$$$$
+   List time                       0.00 Other:            0.00
+         Electrostatic & VDW             0.00 Other:            0.00
+      Nonbond force                   0.00 Other:            0.00
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.00 Other:            0.00
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.00 Other:            0.00
+ Total time                      0.11 Other:            0.11
+         $$$$$$  Average   profile $$$$$
+   List time                       0.00 Other:            0.00
+         Electrostatic & VDW             0.00 Other:            0.00
+      Nonbond force                   0.00 Other:            0.00
+         Bond energy                     0.00 Other:            0.00
+         Angle energy                    0.00 Other:            0.00
+         Dihedral energy                 0.00 Other:            0.00
+         Restraints energy               0.00 Other:            0.00
+      INTRNL energy                   0.00 Other:            0.00
+      Comm energy                     0.00 Other:            0.00
+      Comm force                      0.00 Other:            0.00
+   Energy time                     0.00 Other:            0.00
+ Total time                      0.11 Other:            0.11
+
+                    NORMAL TERMINATION BY NORMAL STOP
+                    MOST SEVERE WARNING WAS AT LEVEL  2
+
+                    $$$$$ JOB ACCOUNTING INFORMATION $$$$$
+                     ELAPSED TIME:     0.15  SECONDS 
+                         CPU TIME:     0.03  SECONDS 

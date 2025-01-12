@@ -1,0 +1,9 @@
+* AMBER protein and water topology and parameters
+*
+
+read rtf card name toppar/parm14sb_all.rtf
+read param card flex name toppar/parm14sb_all.prm
+
+! Custom topology and parameter files for LIG
+read rtf card name @lig_charmm.rtf append
+read param flex card name @lig_charmm.prm append

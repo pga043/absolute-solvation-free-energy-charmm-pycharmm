@@ -1,0 +1,5 @@
+#/bin/bash
+
+# grep 'DYNA>' output_0 | awk 'NR>3 {print $6}' > tmp_0
+#vimdiff tmp_0 win0/post/win0.dat
+

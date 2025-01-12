@@ -1,0 +1,60 @@
+* Force Field Parameter File.
+* 
+
+ATOMS
+MASS    -1 _CAXB  12.010000
+MASS    -1 _CPXB  12.010000
+MASS    -1 _CLXB  35.450000
+MASS    -1 _HAXB   1.008000
+
+BONDS
+_CAXB _CAXB  378.60   1.398
+_CAXB _CPXB  368.40   1.406
+_CAXB _HAXB  395.70   1.086
+_CAXB _CLXB  182.00   1.750
+_CPXB _CPXB  277.60   1.485
+
+ANGLES
+_CAXB _CAXB _CAXB   68.800     120.020
+_CAXB _CAXB _HAXB   48.700     119.880
+_CAXB _CPXB _CAXB   68.900     118.380
+_CAXB _CPXB _CPXB   66.100     121.110
+_CAXB _CAXB _CPXB   68.400     120.690
+_CAXB _CAXB _CLXB   72.100     119.390
+_CPXB _CAXB _HAXB   48.500     119.860
+_CPXB _CAXB _CLXB   71.700     120.390
+
+DIHEDRALS
+_CAXB _CAXB _CAXB _CPXB     3.625         2     180.0
+_CAXB _CAXB _CAXB _HAXB     3.625         2     180.0
+_CPXB _CAXB _CAXB _HAXB     3.625         2     180.0
+_HAXB _CAXB _CAXB _HAXB     3.625         2     180.0
+_CAXB _CAXB _CPXB _CAXB     3.625         2     180.0
+_HAXB _CAXB _CPXB _CAXB     3.625         2     180.0
+_CAXB _CAXB _CPXB _CPXB     3.625         2     180.0
+_HAXB _CAXB _CPXB _CPXB     3.625         2     180.0
+_CAXB _CAXB _CAXB _CAXB     3.625         2     180.0
+_CAXB _CAXB _CAXB _CLXB     3.625         2     180.0
+_CLXB _CAXB _CAXB _HAXB     3.625         2     180.0
+_CLXB _CAXB _CAXB _CLXB     3.625         2     180.0
+_CLXB _CAXB _CAXB _CPXB     3.625         2     180.0
+_CAXB _CPXB _CPXB _CAXB     0.795         2     180.0
+_CLXB _CAXB _CPXB _CPXB     3.625         2     180.0
+_CLXB _CAXB _CPXB _CAXB     3.625         2     180.0
+
+IMPROPER
+_CAXB _CPXB _CAXB _HAXB     1.100         2     180.0
+_CAXB _CAXB _CAXB _HAXB     1.100         2     180.0
+_CAXB _CAXB _CAXB _CLXB     1.100         2     180.0
+_CAXB _CAXB _CPXB _CPXB     1.100         2     180.0
+_CAXB _CLXB _CAXB _CPXB     1.100         2     180.0
+
+
+NONBONDED nbxmod  5 atom cdiel shift vatom vdistance vswitch -
+cutnb 14.0 ctofnb 12.0 ctonnb 10.0 eps 1.0 e14fac 0.83333333 wmin 1.5
+!                Emin     Rmin/2              Emin/2     Rmin  (for 1-4's)
+!             (kcal/mol)    (A)
+_CAXB      0.00   -0.0988    1.8606      0.00   -0.0494    1.8606
+_CPXB      0.00   -0.0988    1.8606      0.00   -0.0494    1.8606
+_CLXB      0.00   -0.2638    1.9452      0.00   -0.1319    1.9452
+_HAXB      0.00   -0.0161    1.4735      0.00   -0.0080    1.4735
